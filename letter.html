@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For my hands may trace the tender words you've pressed into paper for me</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.png">
+    
+    <style>
+
+        :root {
+            --glimmer-main: rgba(255, 250, 200, 0.9);
+            --glimmer-soft: rgba(255, 245, 150, 0.3);
+            --vine-color: rgba(180, 255, 180, 0.3);
+            --glass-bg: rgba(255, 245, 220, 0.25);
+            --glass-glow: rgba(255, 240, 150, 0.6);
+        }
+
+        * { cursor: none !important; }
+
+        body {
+            margin: 0; padding: 0; overflow: hidden;
+            background: radial-gradient(circle at center, #1a2a1a 0%, #000800 100%);
+            height: 100vh;
+            display: flex; justify-content: center; align-items: center;
+            position: relative;
+        }
+
+        /* Hidden audio players */
+        .hidden-audio {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        #custom-cursor {
+            position: fixed;
+            width: 80px; height: 80px;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            background-image: url('assets/cursor.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
+        }
+
+        .trail {
+            position: fixed; pointer-events: none; z-index: 9999;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--glimmer-main) 0%, var(--glimmer-soft) 60%, transparent 100%);
+            animation: glimmer-fade 1.2s cubic-bezier(0.1, 0.4, 0.3, 1) forwards;
+        }
+
+        @keyframes glimmer-fade {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+            100% { transform: translate(-50%, -80px) scale(2.2); opacity: 0; filter: blur(6px); }
+        }
+
+        .star {
+            position: absolute; background: #fff; border-radius: 50%;
+            pointer-events: none; 
+            animation: shimmer var(--d) ease-in-out infinite alternate;
+        }
+        @keyframes shimmer { 
+            0% { opacity: 0.1; transform: scale(0.8); } 
+            100% { opacity: 0.8; transform: scale(1.2); } 
+        }
+
+        .twinkle-star {
+            position: absolute;
+            background: #fff9e6;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 12px #fffacd, 0 0 20px #ffeb99;
+            animation: twinklePop 1.2s ease-out forwards, floatGlow 3s infinite alternate;
+            z-index: 40;
+        }
+
+        @keyframes twinklePop {
+            0% { opacity: 0; transform: scale(0.2); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.8; transform: scale(1); }
+        }
+
+        @keyframes floatGlow {
+            0% { opacity: 0.5; filter: blur(1px); }
+            100% { opacity: 1; filter: blur(0px); box-shadow: 0 0 18px #fffacd, 0 0 30px #ffe08c; }
+        }
+        .shower-star {
+            position: fixed;
+            width: 140px;
+            height: 3px;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 245, 1) 0%,
+                rgba(255, 255, 200, 0.9) 30%,
+                rgba(255, 230, 120, 0.6) 70%,
+                transparent 100%
+            );
+            border-radius: 50% 0 0 50%;
+            filter: blur(3px);
+            box-shadow: 
+                0 0 30px rgba(255, 255, 200, 0.9),
+                0 0 60px rgba(255, 220, 80, 0.6);
+            transform: rotate(-15deg) skewX(-8deg);
+            pointer-events: none;
+            z-index: 150;
+            animation: shootShower 1.2s cubic-bezier(0.2, 0.9, 0.3, 1) forwards;
+            opacity: 0;
+            will-change: transform, left, top;
+        }
+
+        .shower-star::before {
+            content: '';
+            position: absolute;
+            top: -8px;
+            left: -30px;
+            width: 60px;
+            height: 18px;
+            background: radial-gradient(ellipse, rgba(255, 255, 200, 0.7) 0%, transparent 80%);
+            filter: blur(12px);
+            border-radius: 50%;
+            opacity: 0.8;
+        }
+
+        .shower-star::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            right: 10px;
+            width: 80px;
+            height: 8px;
+            background: linear-gradient(90deg, rgba(255, 255, 180, 0.8), rgba(255, 200, 100, 0.3), transparent);
+            filter: blur(8px);
+            border-radius: 50%;
+        }
+
+        @keyframes shootShower {
+            0% {
+                left: -200px;
+                top: var(--start-y, 10vh);
+                opacity: 0;
+                transform: rotate(-18deg) skewX(-10deg) scale(0.7);
+            }
+            20% {
+                opacity: 1;
+                transform: rotate(-15deg) skewX(-8deg) scale(1.2);
+            }
+            80% {
+                opacity: 0.9;
+                transform: rotate(-12deg) skewX(-5deg) scale(1);
+            }
+            100% {
+                left: calc(100vw + 200px);
+                top: var(--end-y, 40vh);
+                opacity: 0;
+                transform: rotate(-10deg) skewX(-3deg) scale(0.8);
+            }
+        }
+
+        .shower-spark {
+            position: fixed;
+            width: 60px;
+            height: 2px;
+            background: linear-gradient(90deg, 
+                rgba(255, 255, 210, 0.95) 0%,
+                rgba(255, 245, 150, 0.7) 50%,
+                transparent 100%
+            );
+            border-radius: 50%;
+            filter: blur(4px);
+            box-shadow: 0 0 25px #fffacd;
+            transform: rotate(-20deg) skewX(-5deg);
+            pointer-events: none;
+            z-index: 145;
+            animation: shootSpark 0.9s linear forwards;
+            opacity: 0;
+        }
+
+        @keyframes shootSpark {
+            0% {
+                left: -100px;
+                top: var(--spark-y, 20vh);
+                opacity: 0;
+                transform: rotate(-25deg) scale(0.5);
+            }
+            10% {
+                opacity: 1;
+                transform: rotate(-20deg) scale(1);
+            }
+            100% {
+                left: calc(100vw + 150px);
+                top: var(--spark-end-y, 50vh);
+                opacity: 0;
+                transform: rotate(-15deg) scale(0.6);
+            }
+        }
+
+        .home-button {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: auto;
+            height: auto;
+            background: transparent;
+            border: 2px solid rgba(255, 255, 200, 0.85);
+            border-radius: 6px;
+            color: rgba(255, 255, 200, 0.9);
+            font-family: 'Georgia', 'Times New Roman', serif;
+            font-size: 1rem;
+            font-weight: 300;
+            letter-spacing: 6px;
+            padding: 4px 10px;
+            text-transform: uppercase;
+            backdrop-filter: blur(2px);
+            box-shadow: 0 0 15px rgba(255, 255, 180, 0.3);
+            text-shadow: 0 0 10px rgba(255, 255, 200, 0.6);
+            cursor: none !important;
+            z-index: 20000;
+            pointer-events: auto;
+            transition: 0.2s;
+            outline: none;
+            line-height: 1;
+            background: transparent !important;
+            fill: none;
+        }
+
+        .home-button:hover {
+            border-color: rgba(255, 255, 255, 1);
+            color: #fffbe3;
+            box-shadow: 0 0 25px rgba(255, 255, 180, 0.7);
+            text-shadow: 0 0 15px #fffac2;
+            transform: scale(1.02);
+        }
+
+   
+        .paper-star-container {
+            position: absolute;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
+            pointer-events: none;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+        }
+
+        .flying-star {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            left: -250px;
+            top: -150px;
+            transform: scale(0.7);
+            background: transparent;
+            pointer-events: auto;
+            cursor: none !important;
+            filter: drop-shadow(0 0 25px rgba(255, 250, 180, 0.9));
+            z-index: 60;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><path fill="%23fff9e6" stroke="%23ffeaa5" stroke-width="2.5" d="M50 5 L63 38 L98 38 L69 57 L82 92 L50 72 L18 92 L31 57 L2 38 L37 38 Z"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            animation: flyFromUpperLeft 5s ease-out forwards;
+        }
+
+        @keyframes flyFromUpperLeft {
+            0% { left: -250px; top: -150px; transform: scale(0.6); opacity: 0.5; }
+            30% { opacity: 0.9; }
+            70% { left: calc(50% - 100px); top: calc(50% - 100px); transform: scale(1.0); opacity: 1; }
+            100% { left: calc(50% - 100px); top: calc(50% - 100px); transform: scale(1.0); opacity: 1; }
+        }
+
+        .flying-star.centered {
+            left: calc(50% - 100px);
+            top: calc(50% - 100px);
+            transform: scale(1.0);
+            animation: none;
+        }
+
+        .flying-star.hidden {
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .flying-star.reappear {
+            opacity: 1;
+            pointer-events: auto;
+            left: calc(50% - 100px);
+            top: calc(50% - 100px);
+            transform: scale(1.0);
+            animation: none;
+        }
+
+        .letter-box {
+            position: absolute;
+            width: 720px;
+            height: auto;
+            min-height: 540px;
+            left: calc(50% - 360px);
+            top: 50%;
+            transform: translateY(-50%) scale(0.95);
+            background: #fef7e9;
+            border: 3px solid #ffe5b4;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4), 0 0 0 2px #faf0d7 inset, 0 0 20px #fffde7;
+            border-radius: 8px 20px 8px 8px;
+            opacity: 0;
+            pointer-events: none;
+            z-index: 55;
+            transition: opacity 0.25s ease, transform 0.3s ease;
+            font-family: 'Georgia', 'Times New Roman', serif;
+            color: #3e2e1f;
+            backdrop-filter: blur(2px);
+            background-image: linear-gradient(45deg, #fff3df 20%, #ffe9d4 80%);
+            word-break: break-word;
+            padding: 48px 60px;
+            text-align: justify;
+            text-justify: inter-word;
+            box-sizing: border-box;
+            cursor: none !important;
+            overflow-y: auto;
+            max-height: 80vh;
+            line-height: 1.65;
+            font-size: 0.9rem;
+            letter-spacing: 0.02em;
+            
+            scrollbar-width: thin;
+            scrollbar-color: rgba(241, 203, 129, 0.9) rgba(255, 245, 200, 0.15);
+        }
+
+        .letter-box::-webkit-scrollbar {
+            width: 12px;
+            background: rgba(255, 245, 220, 0.15);
+            backdrop-filter: blur(8px);
+            border-radius: 20px;
+        }
+
+        .letter-box::-webkit-scrollbar-track {
+            background: rgba(255, 245, 210, 0.1);
+            backdrop-filter: blur(4px);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 200, 0.3);
+            box-shadow: inset 0 0 10px rgba(255, 255, 180, 0.2);
+        }
+
+        .letter-box::-webkit-scrollbar-thumb {
+            background: linear-gradient(145deg, 
+                rgba(255, 235, 180, 0.9), 
+                rgba(255, 210, 140, 0.8)
+            );
+            backdrop-filter: blur(12px);
+            border-radius: 20px;
+            border: 1.5px solid rgba(255, 255, 230, 0.6);
+            box-shadow: 
+                0 0 15px rgba(255, 230, 150, 0.7),
+                inset 0 0 10px rgba(255, 255, 250, 0.6);
+            background-clip: padding-box;
+        }
+
+        .letter-box::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(145deg, 
+                rgba(255, 245, 200, 0.95), 
+                rgba(255, 220, 160, 0.9)
+            );
+            box-shadow: 
+                0 0 25px rgba(255, 240, 170, 0.9),
+                inset 0 0 12px rgba(255, 255, 255, 0.8);
+            border: 1.5px solid rgba(255, 255, 245, 0.8);
+        }
+
+        .letter-box::-webkit-scrollbar-corner {
+            background: transparent;
+        }
+
+        .letter-box {
+            scrollbar-width: thin;
+            scrollbar-color: rgba(255, 220, 150, 0.9) rgba(255, 245, 200, 0.15);
+        }
+      
+        .letter-box p {
+            font-size: 0.9rem;
+            line-height: 1.75;
+            margin-bottom: 1.8rem;
+            text-align: justify;
+            text-justify: inter-word;
+            margin-top: 0;
+        }
+
+        .letter-box .italic,
+        .letter-box i {
+            font-style: italic;
+        }
+
+        .letter-box .bold {
+            font-weight: 700;
+            color: #3a2c2a;
+        }
+
+        .letter-box .signature {
+            text-align: right;
+            font-style: normal;
+            font-weight: normal;
+            margin-top: 2.8rem;
+            font-size: 1rem;
+            letter-spacing: 0.5px;
+            line-height: 1.6;
+            width: 100%;
+        }
+
+        .letter-box .heart {
+            color: #a14242;
+            font-size: 1.1rem;
+        }
+
+        .letter-box.show {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(-50%) scale(1);
+            animation: gentlePulse 3s infinite alternate;
+        }
+
+        @keyframes gentlePulse {
+            0% { box-shadow: 0 10px 25px rgba(0,0,0,0.4), 0 0 0 2px #faf0d7 inset, 0 0 15px #fff3bf; }
+            100% { box-shadow: 0 12px 30px rgba(0,0,0,0.5), 0 0 0 3px #ffefc0 inset, 0 0 40px #ffeeb0; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hidden Audio Players - Heartwarming & Emotional Piano -->
+    <audio id="romanticPiano" class="hidden-audio" autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+        <!-- Fallback if first source fails -->
+        <source src="https://www.bensound.com/bensound-music/bensound-love.mp3" type="audio/mpeg">
+    </audio>
+    
+    <audio id="emotionalPiano" class="hidden-audio" autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
+        <!-- Fallback for tear-jerking melody -->
+        <source src="https://www.bensound.com/bensound-music/bensound-memories.mp3" type="audio/mpeg">
+    </audio>
+
+    <div id="custom-cursor"></div>
+
+<a href="Main.html" style="text-decoration: none; cursor: none !important;">
+    <button class="home-button" id="homeButton">HOME</button>
+</a>
+    <div class="paper-star-container">
+        <div id="starPaper" class="flying-star"></div>
+        
+        <div id="letterRect" class="letter-box">
+            <p>Dearest,</p>
+            <p>
+                Once upon a time, <span class="italic">moonstruck by your presence</span> <span class="italic">-a presence like the soft consolations of the sea, steady and vast and impossibly gentle-</span> I was held captive and I have never once wanted to escape. If fate is ever kind (though I hardly dare to hope it listens), I hope in all our red strings, their infinite tangles and frayed edges and knots tied by hands we never met, there exists a theory we haven't yet proven: that threads can stretch not just across space but across lifetimes. That somewhere, in the weft and warp of time, this same red string binds us again. And in this lifetime, I get to be with you.
+            </p>
+            <p>
+                And if fate is not listening then know that when I am six feet under and the maggots reach for my heart, they will find nothing left but my overflowing love for you. It will have outlasted everything else. It will have become everything else.
+            </p>
+            <p>
+                I know wanting something this much is asking for the universe to laugh. The yearning grew way too loud, and jinxing it is my worst fear. The thought of being separated from you makes the mundane world more melancholic—I am homesick for the heaven I found in you, and no other place has ever felt like shelter. But for you, I will do it scared. I will lay my wanting bare, even as my hands tremble. Because you are worth every risk I never thought I'd take.
+            </p>
+            <p>
+                I am writing this not because I have something new to say, but because the old things refuse to fade. <span class="bold">One hundred and fifteen days later</span>, and I still love you just as much as I did last October. I love you without end. I don't think you understand how beautiful you make my world just by living in it—how your existence rearranges the light. I admit I miss you terribly. The world is too loud without the quiet of you in it. Too flat. Too pale. Too much, and yet not nearly enough.
+            </p>
+            <p>
+                As long as I am alive, there will always be someone who is proud of you in everything. In the small victories and the silences and the days you only survived. Someone who watches the way you move through this world and thinks: <span class="italic">there. there is the person I belong to.</span>
+            </p>
+            <p>
+                You are the outline of warmth stitched into everything gentle. And I will say this again: no one knew how much violence it took for you to be gentle, but thank you. Thank you for surviving it. Thank you for becoming this. Thank you for being the person you are right now.
+            </p>
+            <p>
+                I am counting the hours until I am <span class="italic">moonstruck</span> again.
+            </p>
+            <p>
+                Until then, I keep your heartbeat in my ears like a seashell. Until then, I wear this wanting like your jacket I have no plans on returning. It still smells like you. I still sleep with it bundled against my chest.
+            </p>
+            <p>
+                I hope we will see each other again soon.
+            </p>
+            <p>
+                I’ll be here, waiting for your hug.
+            </p>
+            <div class="signature">
+                I remain, ever yours,<br>
+                Yazzie <span class="heart">♡</span>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        let lastPos = { x: 0, y: 0 };
+
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            const dist = Math.hypot(e.clientX - lastPos.x, e.clientY - lastPos.y);
+            if (dist > 20) { 
+                createTrail(e.clientX, e.clientY);
+                lastPos = { x: e.clientX, y: e.clientY };
+            }
+        });
+
+        function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            const size = Math.random() * 15 + 5 + 'px';
+            trail.style.width = size; trail.style.height = size;
+            document.body.appendChild(trail);
+            setTimeout(() => { trail.remove(); }, 1200);
+        }
+
+        for(let i=0; i<100; i++){
+            let s = document.createElement('div');
+            s.className = 'star';
+            let size = Math.random() * 2 + 1 + 'px';
+            s.style.width = size; s.style.height = size;
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.setProperty('--d', (Math.random() * 3 + 2) + 's');
+            document.body.appendChild(s);
+        }
+
+        const star = document.getElementById('starPaper');
+        const letter = document.getElementById('letterRect');
+
+        // Audio elements
+        const romanticPiano = document.getElementById('romanticPiano');
+        const emotionalPiano = document.getElementById('emotionalPiano');
+        
+        // Set volume for both (mix them for a richer emotional experience)
+        romanticPiano.volume = 0.3; // Lower volume for background
+        emotionalPiano.volume = 0.25; // Slightly lower as it's more intense
+        
+        // Handle browser autoplay restrictions
+        function initAudio() {
+            // Try to play both
+            romanticPiano.play().catch(e => {
+                console.log("Romantic piano autoplay blocked. Will play after interaction.");
+            });
+            
+            emotionalPiano.play().catch(e => {
+                console.log("Emotional piano autoplay blocked. Will play after interaction.");
+            });
+            
+            // If autoplay fails, play after first user interaction
+            if (romanticPiano.paused || emotionalPiano.paused) {
+                document.addEventListener('click', function playOnClick() {
+                    romanticPiano.play();
+                    emotionalPiano.play();
+                    document.removeEventListener('click', playOnClick);
+                }, { once: true });
+            }
+        }
+
+        star.addEventListener('animationend', function(e) {
+            if (e.animationName === 'flyFromUpperLeft') {
+                star.classList.add('centered');
+                star.style.left = 'calc(50% - 100px)';
+                star.style.top = 'calc(50% - 100px)';
+            }
+        });
+
+        function spawnTwinklingStars(count = 28) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const twinkle = document.createElement('div');
+                    twinkle.className = 'twinkle-star';
+                    const size = Math.floor(Math.random() * 8) + 3 + 'px';
+                    twinkle.style.width = size;
+                    twinkle.style.height = size;
+                    twinkle.style.left = Math.random() * 100 + 'vw';
+                    twinkle.style.top = Math.random() * 100 + 'vh';
+                    const floatDur = (Math.random() * 3 + 2).toFixed(2) + 's';
+                    twinkle.style.animation = `twinklePop 0.9s ease-out forwards, floatGlow ${floatDur} infinite alternate`;
+                    document.body.appendChild(twinkle);
+                    setTimeout(() => { if (twinkle.parentNode) twinkle.remove(); }, 7000);
+                }, i * 30);
+            }
+        }
+
+        function spawnStarShower(count = 18) {
+            for (let i = 0; i < count; i++) {
+                setTimeout(() => {
+                    const isLarge = Math.random() > 0.4;
+                    const starElement = document.createElement('div');
+                    starElement.className = isLarge ? 'shower-star' : 'shower-spark';
+                    
+                    const startY = Math.random() * 60 + 5 + 'vh';
+                    const endY = (parseFloat(startY) + (Math.random() * 30 - 10)) + 'vh';
+                    
+                    starElement.style.setProperty('--start-y', startY);
+                    starElement.style.setProperty('--end-y', endY);
+                    
+                    const angle = (Math.random() * 30 - 25) + 'deg';
+                    const skew = (Math.random() * 15 - 10) + 'deg';
+                    starElement.style.transform = `rotate(${angle}) skewX(${skew})`;
+                    
+                    if (isLarge) {
+                        const width = 120 + Math.floor(Math.random() * 80) + 'px';
+                        starElement.style.width = width;
+                    } else {
+                        const width = 40 + Math.floor(Math.random() * 40) + 'px';
+                        starElement.style.width = width;
+                        starElement.style.height = '2px';
+                    }
+                    
+                    document.body.appendChild(starElement);
+                    
+                    setTimeout(() => {
+                        if (starElement.parentNode) starElement.remove();
+                    }, 1500);
+                }, i * 60);
+            }
+        }
+
+        star.addEventListener('click', function() {
+            star.classList.add('hidden');
+            star.classList.remove('reappear');
+            letter.classList.add('show');
+            
+            spawnTwinklingStars(32);
+            spawnStarShower(24);
+        });
+
+        letter.addEventListener('click', function() {
+            letter.classList.remove('show');
+            star.classList.remove('hidden');
+            star.classList.add('centered', 'reappear');
+            star.style.left = 'calc(50% - 100px)';
+            star.style.top = 'calc(50% - 100px)';
+            star.style.transform = 'scale(1)';
+            
+            spawnTwinklingStars(12);
+            spawnStarShower(8);
+        });
+
+        window.setTimeout(() => {
+            if (!star.classList.contains('centered') && !star.classList.contains('hidden')) {
+                star.style.left = 'calc(50% - 100px)';
+                star.style.top = 'calc(50% - 100px)';
+                star.style.transform = 'scale(1)';
+                star.classList.add('centered');
+            }
+        }, 5200);
+
+        window.addEventListener('load', () => {
+            spawnTwinklingStars(8);
+            initAudio(); // Initialize audio on load
+        });
+
+        const homeBtn = document.getElementById('homeButton');
+        homeBtn.addEventListener('click', function() {
+            letter.classList.remove('show');
+            star.classList.remove('hidden');
+            star.classList.add('centered', 'reappear');
+            star.style.left = 'calc(50% - 100px)';
+            star.style.top = 'calc(50% - 100px)';
+            star.style.transform = 'scale(1)';
+            
+            spawnTwinklingStars(12);
+            spawnStarShower(6);
+        });
+    </script>
+
+</body>
+</html>

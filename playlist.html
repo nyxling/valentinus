@@ -1,0 +1,518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For my heart may still wander on every note you leave for me to hear.</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.png">
+    <style>
+        :root {
+            --glimmer-main: rgba(255, 250, 200, 0.9); 
+            --glimmer-soft: rgba(255, 245, 150, 0.3);
+            --accent-gold: #e2d8ad;
+            --shine-color: rgba(255, 255, 255, 0.4);
+        }
+
+        /* --- GREEN RAINING HEARTS --- */
+        .heart-particle {
+            position: fixed;
+            top: -50px; /* Start above screen */
+            pointer-events: none;
+            z-index: 10001;
+            font-size: 100px; /* Big hearts */
+            color: #1c6c39; /* Vibrant green */
+            user-select: none;
+            filter: drop-shadow(0 0 8px rgba(21, 122, 58, 0.5));
+            animation: heart-rain 3s linear forwards;
+        }
+
+        @keyframes heart-rain {
+            0% { 
+                transform: translateY(0) translateX(0) rotate(0deg); 
+                opacity: 0; 
+            }
+            10% { opacity: 1; }
+            100% { 
+                transform: translateY(110vh) translateX(var(--sway)) rotate(var(--rot)); 
+                opacity: 0; 
+            }
+        }
+
+        /* --- BASE STYLE --- */
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background: radial-gradient(circle at center, #1a2a1a 0%, #000800 100%);
+            height: 100vh;
+            font-family: 'Inter', 'Georgia', serif;
+            cursor: none !important; 
+        }
+
+        /* --- SPROUTING VINES --- */
+        .bg-vines {
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            opacity: 0.3;
+        }
+
+        .sprout-path {
+            fill: none;
+            stroke: rgba(180, 255, 180, 0.2);
+            stroke-width: 6;
+            stroke-linecap: round;
+            filter: blur(4px);
+            stroke-dasharray: 1000;
+            stroke-dashoffset: 1000;
+            animation: growVines 10s ease-out forwards;
+        }
+
+        @keyframes growVines { to { stroke-dashoffset: 0; } }
+
+        /* --- HOME BUTTON --- */
+        .home-btn {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            padding: 10px 30px;
+            font-size: 0.8rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-decoration: none;
+            color: rgba(255, 255, 255, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            background: transparent;
+            border-radius: 50px;
+            z-index: 1000;
+            transition: all 0.4s ease;
+        }
+
+        .home-btn:hover {
+            color: #f3eedd;
+            border-color: var(--accent-gold);
+            box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
+            transform: scale(1.05);
+        }
+
+        /* --- GLASS MUSIC INDICATOR --- */
+        #music-status {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 55px;
+            height: 55px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .bars { display: flex; align-items: flex-end; gap: 3px; height: 18px; }
+        .bar { width: 3px; background: var(--accent-gold); height: 5px; border-radius: 2px; transition: 0.3s; }
+
+        .playing .bar { animation: pulse-bar 0.8s ease-in-out infinite alternate; }
+        .playing .bar:nth-child(2) { animation-delay: 0.2s; }
+        .playing .bar:nth-child(3) { animation-delay: 0.4s; }
+
+        @keyframes pulse-bar { 
+            0% { height: 5px; opacity: 0.4; } 
+            100% { height: 20px; opacity: 1; box-shadow: 0 0 10px var(--accent-gold); } 
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        #custom-cursor {
+            position: fixed;
+            width: 100px; height: 100px;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            background-image: url('assets/cursor.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
+        }
+
+        .trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            background: radial-gradient(circle, var(--glimmer-main) 0%, var(--glimmer-soft) 60%, transparent 100%);
+            animation: glimmer-fade 1.2s cubic-bezier(0.1, 0.4, 0.3, 1) forwards;
+        }
+
+        @keyframes glimmer-fade {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+            100% { transform: translate(-50%, -80px) scale(2.2); opacity: 0; filter: blur(6px); }
+        }
+
+        /* --- NOTE PANEL --- */
+        #note-panel {
+            position: absolute;
+            left: calc(50% - 460px);
+            top: 50%;
+            transform: translateY(-50%) rotate(-3deg);
+            width: 280px;
+            padding: 30px;
+            background: #fdfcf0;
+            box-shadow: 20px 20px 40px rgba(0,0,0,0.7);
+            z-index: 250; 
+            border-radius: 2px;
+            color: #2c3e50;
+            opacity: 0;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            clip-path: polygon(2% 0%, 98% 3%, 100% 97%, 0% 100%);
+            pointer-events: none;
+        }
+
+        #note-panel.active { opacity: 0.96; left: calc(50% - 390px); }
+
+        /* --- VINYL PLAYER --- */
+        #wrap {
+            position: relative;
+            z-index: 10;
+            height: 100vh;
+            display: flex;
+            flex-direction: column; 
+            align-items: center;
+            justify-content: center;
+            perspective: 1000px;
+        }
+
+        #album-container {
+            position: relative;
+            width: 50vw; height: 50vw;
+            max-height: 55vh; max-width: 55vh;
+            margin-bottom: 30px; 
+        }
+
+        .album {
+            position: absolute;
+            width: 100%; height: 100%;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s;
+        }
+
+        .cover {
+            position: absolute;
+            top: 0; left: 0;
+            z-index: 2;
+            width: 100%; height: 100%;
+            background-size: cover;
+            background-position: center;
+            box-shadow: 10px 10px 30px rgba(0,0,0,0.8);
+            border-radius: 8px;
+        }
+
+        .vinyl {
+            position: absolute;
+            top: 2.5%; left: 48%;
+            z-index: 1;
+            width: 95%; height: 95%;
+            background-image: url('https://gallery.yopriceville.com/var/resizes/Free-Clipart-Pictures/Music-PNG/Gramophone_Vinyl_LP_Record_PNG_Transparent_Clip_Art_Image.png?m=1462983196');
+            background-size: 106% 106%;
+            background-position: center;
+            border-radius: 50%;
+            animation: spinThat 5s linear infinite;
+        }
+
+        .vinyl .print { position: absolute; top: 33%; left: 33%; height: 34%; width: 34%; background-size: cover; border-radius: 50%; }
+
+        /* --- GLOWING GLASS AUDIO PLAYER --- */
+        #glass-audio-container {
+            width: 320px;
+            background: rgba(255, 255, 255, 0.07);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50px;
+            padding: 12px;
+            display: flex;
+            justify-content: center;
+            position: relative;
+            overflow: hidden; 
+            box-shadow: 0 0 20px rgba(226, 216, 173, 0.2), 
+                        inset 0 0 15px rgba(255, 255, 255, 0.1);
+            z-index: 1000;
+        }
+
+        #glass-audio-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -150%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                90deg, 
+                transparent, 
+                var(--shine-color), 
+                transparent
+            );
+            animation: moveShine 4s infinite;
+        }
+
+        @keyframes moveShine {
+            0% { left: -150%; }
+            50% { left: 150%; }
+            100% { left: 150%; }
+        }
+
+        audio {
+            width: 100%;
+            height: 35px;
+            filter: invert(1) hue-rotate(180deg) opacity(0.8) drop-shadow(0 0 5px var(--accent-gold));
+        }
+
+        /* --- GLASS NAVIGATION ARROWS --- */
+        .nav-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 80px; height: 80px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 500;
+            color: white;
+            font-size: 2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+        }
+
+        .nav-btn:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .prev { left: 4%; }
+        .next { right: 4%; }
+
+        .star { position: absolute; background: #fff; border-radius: 50%; pointer-events: none; animation: shimmer var(--d) ease-in-out infinite alternate; }
+        @keyframes shimmer { 0% { opacity: 0.1; transform: scale(0.8); } 100% { opacity: 0.8; transform: scale(1.2); } }
+        @keyframes spinThat { to { transform: rotate(360deg); } }
+    </style>
+</head>
+<body onclick="tryAutoplay()">
+
+    <svg class="bg-vines" id="vineSvg"></svg>
+    <div id="custom-cursor"></div>
+    <a href="Main.html" class="home-btn">home</a>
+
+    <div id="music-status">
+        <div class="bars">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </div>
+
+    <div id="note-panel">
+        <h3 id="note-title"></h3>
+        <p id="note-meaning"></p>
+    </div>
+
+    <div id="wrap">
+        <div class="nav-btn prev" onclick="changeSong(-1)">&#10094;</div>
+        
+        <div id="album-container"></div>
+
+        <div id="glass-audio-container">
+            <audio id="main-player" controls loop></audio>
+        </div>
+
+        <div class="nav-btn next" onclick="changeSong(1)">&#10095;</div>
+    </div>
+
+    <script>
+        const audioPlayer = document.getElementById('main-player');
+        let hasInteracted = false;
+
+        const playlist = [
+            { 
+                title: "Sparks", 
+                audio: "https://audio.jukehost.co.uk/rUyNZi9TBGbmdMuZdMFrU38LT8TOM0BD.mp3", 
+                meaning: `...that silence isn't the absence of sound, but the absence of you.
+                        This is the song I played every time I remembered the first time I confessed my feelings to you. Every time. Not just when I missed you. When I remembered you. There's a difference. I always feel sentimental towards this song that all that is engraved in my head is you.`,
+                cover: "https://t2.genius.com/unsafe/430x430/https%3A%2F%2Fimages.genius.com%2F8361d5034c6272426c1367d6ae03a4c4.1000x1000x1.png", 
+                print: "https://t2.genius.com/unsafe/430x430/https%3A%2F%2Fimages.genius.com%2F8361d5034c6272426c1367d6ae03a4c4.1000x1000x1.png" 
+            },
+            { 
+                title: "Exist for Love", 
+                audio: "https://audio.jukehost.co.uk/PoArUEbtrVAO2iX4dmu6zM7MRqv2kXs6.mp3", 
+                meaning: `In some wild guess, this song might not be one of your cup of tea but somehow I felt this way at some point in our relationship. It is as if the fresh breeze of morning dew air washes over me by the way you came into my life. Somehow you are the morning I keep waking up to. Even now.`,
+                cover: "https://images.squarespace-cdn.com/content/v1/5b0dd7581aef1d319395b854/1589805436793-QWV2Z0IOOOSY7KKHEEQP/Exist+For+Love+Press+Shot+2.jpg?format=2500w", 
+                print: "https://images.squarespace-cdn.com/content/v1/5b0dd7581aef1d319395b854/1589805436793-QWV2Z0IOOOSY7KKHEEQP/Exist+For+Love+Press+Shot+2.jpg?format=2500w" 
+            },
+            { 
+                title: "Pahina", 
+                audio: "https://audio.jukehost.co.uk/K1vkmILPNHGtvvLv5IIjsng6sQj7djU7.mp3", 
+                meaning: `This song reminded me so much of you back when we were still friends. Perhaps because of the COJ concert but admittedly, every time I hear it, I'm right back there. Standing next to you in the crowd, pretending my heart wasn't beating out of my chest, pretending I didn't already know I would spend the rest of my life missing you even when you were right beside me. I might regret reading this later but it's good to let it out now.`,
+                cover: "https://upload.wikimedia.org/wikipedia/en/b/b0/Silakbo_-_Cup_of_Joe.jpeg", 
+                print: "https://upload.wikimedia.org/wikipedia/en/b/b0/Silakbo_-_Cup_of_Joe.jpeg" 
+            },
+            { 
+                title: "Harvey", 
+                audio: "https://audio.jukehost.co.uk/p5giqpq3Ff3e57loljaPwwGizKllzwLb.mp3", 
+                meaning: `Mainly because of that cute cat animation you sent to me a couple weeks ago. Every time I hear this song, it reminds me of our usual hangouts and just the overall vibe of us being together. Now when the song plays, I think of that cat. I think of your weird sense of humor. I think of all the small ways you exist in my life that I never noticed were adding up to something until they already had. `,
+                cover: "https://cdn-images.dzcdn.net/images/cover/7b311a9b9476b2e847e37843919bd383/500x500-000000-80-0-0.jpg", 
+                print: "https://cdn-images.dzcdn.net/images/cover/7b311a9b9476b2e847e37843919bd383/500x500-000000-80-0-0.jpg" 
+            },
+            { 
+                title: "Lover, You Should've Come Over", 
+                audio: "https://audio.jukehost.co.uk/C60WUX3kWoVzeuBescJqbHleIXZ7oQZr.mp3", 
+                meaning: `It is undeniably devastating how much I missed you and this song is currently on loop merely for that fact alone. I don't know what magic you have cast upon me but surely it did have a huge effect. I don't know what magic...  I only know it worked. It worked so completely that now I am here, alone, playing this song until it lives in my bones, trying to find you in the spaces between the notes. Trying to find my way back to you. This song is on loop merely for that fact alone. That I miss you. That I have always missed you, even before I had a reason to. That I will keep pressing repeat, keep reaching across this distance, keep hoping that somewhere, somehow, you feel it too. What magic. What devastating, beautiful magic. `,
+                cover: "https://t2.genius.com/unsafe/430x430/https%3A%2F%2Fimages.genius.com%2F1e83c7bc3074560988b3de316db9c735.640x640x1.jpg", 
+                print: "https://t2.genius.com/unsafe/430x430/https%3A%2F%2Fimages.genius.com%2F1e83c7bc3074560988b3de316db9c735.640x640x1.jpg" 
+            }
+        ];
+
+        let currentIndex = 0;
+        let lastPos = { x: 0, y: 0 };
+        const cursor = document.getElementById('custom-cursor');
+        const container = document.getElementById('album-container');
+        const notePanel = document.getElementById('note-panel');
+        const vineSvg = document.getElementById('vineSvg');
+        const musicStatus = document.getElementById('music-status');
+
+        audioPlayer.onplay = () => musicStatus.classList.add('playing');
+        audioPlayer.onpause = () => musicStatus.classList.remove('playing');
+
+        function tryAutoplay() {
+            if (!hasInteracted) {
+                audioPlayer.play().catch(() => {});
+                hasInteracted = true;
+            }
+        }
+
+        /* --- GREEN RAIN FUNCTION --- */
+        function rainHearts() {
+            for(let i=0; i<12; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart-particle';
+                heart.innerHTML = '❤';
+                
+                // Random horizontal start position
+                heart.style.left = Math.random() * 100 + 'vw';
+                
+                // Random sway and rotation for variety
+                const sway = (Math.random() - 0.5) * 200 + 'px';
+                const rot = (Math.random() * 360) + 'deg';
+                heart.style.setProperty('--sway', sway);
+                heart.style.setProperty('--rot', rot);
+                
+                // Stagger the drop times slightly
+                heart.style.animationDelay = Math.random() * 0.5 + 's';
+                
+                document.body.appendChild(heart);
+                setTimeout(() => heart.remove(), 3000);
+            }
+        }
+
+        function initVines() {
+            for (let i = 0; i < 25; i++) {
+                const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+                path.setAttribute("class", "sprout-path");
+                const startX = Math.random() * window.innerWidth;
+                const startY = window.innerHeight + 100;
+                const cp1x = startX + (Math.random() - 0.5) * 600;
+                const cp1y = startY - 400;
+                const cp2x = startX + (Math.random() - 0.5) * 600;
+                const cp2y = 200;
+                const endX = startX + (Math.random() - 0.5) * 300;
+                const endY = -100;
+                path.setAttribute("d", `M${startX},${startY} C${cp1x},${cp1y} ${cp2x},${cp2y} ${endX},${endY}`);
+                path.style.animationDelay = (Math.random() * 3) + "s";
+                vineSvg.appendChild(path);
+            }
+        }
+
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            const dist = Math.hypot(e.clientX - lastPos.x, e.clientY - lastPos.y);
+            if (dist > 15) { 
+                createTrail(e.clientX, e.clientY);
+                lastPos = { x: e.clientX, y: e.clientY };
+            }
+        });
+
+        function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = x + 'px'; trail.style.top = y + 'px';
+            const size = Math.random() * 15 + 10 + 'px';
+            trail.style.width = size; trail.style.height = size;
+            document.body.appendChild(trail);
+            setTimeout(() => trail.remove(), 1200);
+        }
+
+        function changeSong(direction) {
+            // Only rain hearts when clicking Next (direction is 1)
+            if(direction === 1) rainHearts(); 
+
+            const oldAlbum = container.querySelector('.album');
+            currentIndex = (currentIndex + direction + playlist.length) % playlist.length;
+            const song = playlist[currentIndex];
+
+            audioPlayer.src = song.audio;
+            audioPlayer.play().then(() => {
+                hasInteracted = true;
+            }).catch(() => {
+                console.log("Interaction required for audio.");
+            });
+
+            notePanel.classList.remove('active');
+            const newAlbum = document.createElement('div');
+            newAlbum.className = 'album';
+            newAlbum.innerHTML = `<div class="cover" style="background-image: url('${song.cover}')"></div>
+                                 <div class="vinyl"><div class="print" style="background-image: url('${song.print}')"></div></div>`;
+            
+            newAlbum.style.transform = `translateX(${direction * 110}%) scale(0.5)`;
+            newAlbum.style.opacity = '0';
+            container.appendChild(newAlbum);
+
+            newAlbum.offsetHeight;
+            if (oldAlbum) {
+                oldAlbum.style.transform = `translateX(${-direction * 110}%) scale(0.5)`;
+                oldAlbum.style.opacity = '0';
+                setTimeout(() => oldAlbum.remove(), 800);
+            }
+
+            newAlbum.style.transform = 'translateX(0%) scale(1)';
+            newAlbum.style.opacity = '1';
+            
+            setTimeout(() => {
+                document.getElementById('note-title').innerText = song.title;
+                document.getElementById('note-meaning').innerText = song.meaning;
+                notePanel.classList.add('active');
+            }, 600);
+        }
+
+        initVines();
+        for(let i = 0; i < 80; i++) {
+            let s = document.createElement('div');
+            s.className = 'star';
+            let size = Math.random() * 2 + 1 + 'px';
+            s.style.width = size; s.style.height = size;
+            s.style.top = Math.random() * 100 + 'vh';
+            s.style.left = Math.random() * 100 + 'vw';
+            s.style.setProperty('--d', (Math.random() * 4 + 2) + 's');
+            document.body.appendChild(s);
+        }
+
+        changeSong(0);
+    </script>
+</body>
+</html>

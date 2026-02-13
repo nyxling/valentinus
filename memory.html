@@ -1,0 +1,718 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For my mind and soul may linger in the moments we once held together</title>
+    <link rel="icon" type="image/x-icon" href="assets/logo.png">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --glimmer-main: rgba(255, 250, 200, 0.9); 
+            --glimmer-soft: rgba(255, 245, 150, 0.3);
+        }
+
+        /* Hides default cursor */
+        * { cursor: none !important; }
+
+        body {
+            margin: 0; padding: 0; overflow: hidden;
+            /* BACKGROUND: Deep forest/dark gradient */
+            background: radial-gradient(circle at center, #1a2a1a 0%, #000800 100%);
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- CUSTOM CURSOR --- */
+        #custom-cursor {
+            position: fixed;
+            width: 80px; height: 80px;
+            pointer-events: none;
+            z-index: 10000;
+            transform: translate(-50%, -50%);
+            background-image: url('assets/cursor.png');
+            background-size: contain;
+            background-repeat: no-repeat;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
+        }
+
+        /* GLIMMER TRAIL EFFECT */
+        .trail {
+            position: fixed;
+            pointer-events: none;
+            z-index: 9999;
+            border-radius: 50%;
+            background: radial-gradient(circle, var(--glimmer-main) 0%, var(--glimmer-soft) 60%, transparent 100%);
+            animation: glimmer-fade 1.2s cubic-bezier(0.1, 0.4, 0.3, 1) forwards;
+        }
+
+        @keyframes glimmer-fade {
+            0% { transform: translate(-50%, -50%) scale(0.3); opacity: 1; }
+            100% { transform: translate(-50%, -80px) scale(2.2); opacity: 0; filter: blur(6px); }
+        }
+
+        /* --- CURVED VINE LINES (SVG) - SPROUTING & SPREADING --- */
+        .sprout-container {
+            position: absolute;
+            width: 100%; height: 100%;
+            top: 0; left: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .growth-vine {
+            fill: none;
+            stroke: rgba(180, 255, 180, 0.35);
+            stroke-width: 3;
+            stroke-linecap: round;
+            filter: blur(5px);
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            animation: sproutAndSpread 12s ease-in-out infinite alternate;
+        }
+
+        .growth-vine:nth-child(1) {
+            animation: sproutAndSpread 14s ease-in-out infinite alternate;
+            stroke: rgba(170, 255, 170, 0.4);
+        }
+        .growth-vine:nth-child(2) {
+            animation: sproutAndSpread 16s ease-in-out infinite alternate;
+            stroke: rgba(190, 255, 190, 0.35);
+            animation-delay: -2s;
+        }
+        .growth-vine:nth-child(3) {
+            animation: sproutAndSpread 18s ease-in-out infinite alternate;
+            stroke: rgba(150, 240, 150, 0.45);
+            animation-delay: -4s;
+        }
+        .growth-vine:nth-child(4) {
+            animation: sproutAndSpread 20s ease-in-out infinite alternate;
+            stroke: rgba(160, 250, 160, 0.3);
+            animation-delay: -6s;
+        }
+
+        @keyframes sproutAndSpread {
+            0% {
+                stroke-dashoffset: 2000;
+                opacity: 0.2;
+                filter: blur(8px);
+            }
+            50% {
+                stroke-dashoffset: 800;
+                opacity: 0.6;
+                filter: blur(5px);
+            }
+            100% {
+                stroke-dashoffset: 0;
+                opacity: 0.9;
+                filter: blur(3px);
+                stroke-width: 3.5;
+            }
+        }
+
+        .sprout-container::before {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 70%, rgba(100, 200, 100, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 20%, rgba(120, 220, 120, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            animation: glowPulse 8s ease-in-out infinite alternate;
+        }
+
+        @keyframes glowPulse {
+            0% { opacity: 0.1; filter: blur(10px); }
+            100% { opacity: 0.3; filter: blur(20px); }
+        }
+
+        /* ---------- BRIGHT TWINKLING STARS (enhanced) ---------- */
+        .star {
+            position: absolute;
+            background: #fff;
+            border-radius: 50%;
+            pointer-events: none;
+            box-shadow: 0 0 20px #fff, 0 0 40px #ffeb99;
+            animation: brightTwinkle var(--d) ease-in-out infinite alternate;
+            z-index: 5;
+        }
+        
+        @keyframes brightTwinkle {
+            0% { 
+                opacity: 0.3; 
+                transform: scale(0.6); 
+                box-shadow: 0 0 10px #fff, 0 0 20px #ffeb99;
+            }
+            50% {
+                opacity: 1; 
+                transform: scale(1.4);
+                box-shadow: 0 0 30px #fff, 0 0 60px #ffd700, 0 0 100px #ffaa33;
+            }
+            100% { 
+                opacity: 0.8; 
+                transform: scale(1); 
+                box-shadow: 0 0 20px #fff, 0 0 40px #ffeb99;
+            }
+        }
+
+        /* Larger, brighter stars for more impact */
+        .star-large {
+            width: 4px !important;
+            height: 4px !important;
+            filter: blur(1px);
+        }
+
+        /* ---------- VISION ASSETS: GREAT VIBES FOR TITLE, CORMORANT FOR BUTTON ---------- */
+        .overlay-ui {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at center, #0a0f0a 0%, #030703 100%);
+        }
+
+        /* ELEGANT TITLE — GREAT VIBES (cursive) */
+        .glow-text {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.1rem 0.3rem;
+            color: #ffef9e;
+            text-shadow: 0 0 18px #ffd966, 0 0 45px #ffb347, 0 0 90px #ffaa33;
+            font-size: 5.8rem;
+            font-weight: 400;
+            font-family: 'Great Vibes', cursive;
+            text-transform: none;
+            letter-spacing: 2px;
+            backdrop-filter: none;
+            background: transparent;
+            padding: 0.8rem 2.8rem;
+            border: none;
+            line-height: 1.1;
+        }
+
+        .glow-letter {
+            opacity: 0;
+            animation: letterFadeIn 0.5s ease forwards;
+        }
+
+        @keyframes letterFadeIn {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* REVEAL BUTTON — CORMORANT GARAMOND */
+        .reveal-btn {
+            pointer-events: auto;
+            margin-top: 1.8rem;
+            padding: 0.35rem 1.6rem;
+            font-size: 1.1rem;
+            background: transparent;
+            border: none;
+            color: #fff3c9;
+            text-shadow: 0 0 8px #ffdb7c;
+            letter-spacing: 6px;
+            font-weight: 400;
+            font-family: 'Cormorant Garamond', 'Didot', 'Garamond', serif;
+            text-transform: uppercase;
+            position: relative;
+            cursor: none;
+            opacity: 0;
+            animation: fadeSlideIn 2.2s ease-out 2s forwards;
+            transition: 0.2s;
+        }
+
+        .reveal-btn::before,
+        .reveal-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 40px;
+            height: 1.2px;
+            background: linear-gradient(90deg, transparent, #ffd966, #ffe68f, transparent);
+            box-shadow: 0 0 6px #ffc107;
+            transform: translateY(-50%);
+        }
+        .reveal-btn::before {
+            left: -50px;
+        }
+        .reveal-btn::after {
+            right: -50px;
+        }
+
+        .reveal-btn:hover {
+            color: #ffe99c;
+            text-shadow: 0 0 16px #ffcc66;
+            transform: scale(1.02);
+        }
+
+        @keyframes fadeSlideIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ----- CAROUSEL CONTAINER ----- */
+        .carousel-wrapper {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.9s cubic-bezier(0.2, 0.9, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: radial-gradient(circle at 50% 50%, rgba(0,0,0,0) 40%, rgba(10,30,5,0.7) 100%);
+            box-shadow: inset 0 0 180px rgba(10, 30, 5, 0.8);
+        }
+
+        .carousel-wrapper.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* --- BIG RECTANGLE CONTINUOUS CAROUSEL (NO PAUSE) --- */
+        .carousel-container {
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            padding: 3rem 0;
+            margin-bottom: 2rem;
+        }
+
+        /* Dark overlay for areas outside the mask */
+        .carousel-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 5;
+            background: radial-gradient(circle at 50% 50%, transparent 30%, rgba(0, 8, 0, 0.9) 80%);
+            mix-blend-mode: multiply;
+        }
+
+        .carousel-track {
+            display: flex;
+            gap: 40px;
+            animation: slideContinuous 35s linear infinite;
+            width: fit-content;
+            padding: 0 20px;
+            -webkit-mask: linear-gradient(90deg, #0000 5%, red 20% 80%, #0000 95%);
+            mask: linear-gradient(90deg, #0000 5%, red 20% 80%, #0000 95%);
+        }
+
+        @keyframes slideContinuous {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(calc(-100% - 40px)); }
+        }
+
+        /* BIG LANDSCAPE CARDS - now with grayscale filter */
+        .carousel-slide {
+            width: 560px;
+            height: 350px;
+            background-size: cover;
+            background-position: center;
+            border-radius: 32px;
+            border: 3px solid rgba(245, 245, 150, 0.6);
+            box-shadow: 0 25px 40px rgba(0,0,0,0.8), 0 0 0 3px rgba(230, 230, 100, 0.15) inset;
+            transition: 0.3s;
+            backdrop-filter: brightness(1.05);
+            flex-shrink: 0;
+            position: relative;
+            overflow: hidden;
+            filter: grayscale(1); /* Convert images to grayscale */
+        }
+
+        /* Slight color shift on hover for emphasis */
+        .carousel-slide:hover {
+            filter: grayscale(0.7); /* Slightly less gray on hover */
+            border-color: rgba(255, 255, 160, 0.9);
+            box-shadow: 0 0 60px #fbffb0;
+            transform: scale(1.01);
+        }
+
+        /* Curved reminiscing overlay */
+        .carousel-slide::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 2;
+            background: 
+                radial-gradient(ellipse at 50% -50%, rgba(0, 0, 0, 0.6) 0%, transparent 70%),
+                radial-gradient(ellipse at 50% 150%, rgba(0, 0, 0, 0.6) 0%, transparent 70%),
+                radial-gradient(ellipse at -30% 50%, rgba(0, 0, 0, 0.5) 0%, transparent 70%),
+                radial-gradient(ellipse at 130% 50%, rgba(0, 0, 0, 0.5) 0%, transparent 70%),
+                repeating-linear-gradient(45deg, 
+                    rgba(255, 245, 200, 0.03) 0px, 
+                    rgba(255, 245, 200, 0.03) 12px,
+                    transparent 12px, 
+                    transparent 24px);
+            mix-blend-mode: overlay;
+        }
+
+        .carousel-slide::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 3;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 250, 210, 0.15) 0%, transparent 60%);
+            border-radius: 32px;
+        }
+
+        /* HOME BUTTON */
+        .home-link {
+            text-decoration: none;
+            pointer-events: auto;
+            z-index: 30;
+            margin-top: 1.5rem;
+        }
+
+        .home-btn {
+            padding: 0.6rem 2.5rem;
+            font-size: 1.5rem;
+            background: transparent;
+            border: none;
+            color: #fff3c9;
+            text-shadow: 0 0 12px #ffdb7c;
+            letter-spacing: 8px;
+            font-weight: 400;
+            font-family: 'Cormorant Garamond', 'Didot', 'Garamond', serif;
+            text-transform: uppercase;
+            position: relative;
+            cursor: none;
+            transition: 0.2s;
+            display: inline-block;
+        }
+
+        .home-btn::before,
+        .home-btn::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 60px;
+            height: 1.8px;
+            background: linear-gradient(90deg, transparent, #ffd966, #ffe68f, transparent);
+            box-shadow: 0 0 8px #ffc107;
+            transform: translateY(-50%);
+        }
+        .home-btn::before {
+            left: -80px;
+        }
+        .home-btn::after {
+            right: -80px;
+        }
+
+        .home-btn:hover {
+            color: #ffe99c;
+            text-shadow: 0 0 20px #ffcc66;
+            transform: scale(1.02);
+        }
+
+        /* HOVER SENSOR ZONES (no pause) */
+        .hover-zone-left, .hover-zone-right {
+            position: absolute;
+            top: 0;
+            width: 22%;
+            height: 100%;
+            z-index: 40;
+            pointer-events: auto;
+            opacity: 0;
+        }
+        .hover-zone-left { left: 0; }
+        .hover-zone-right { right: 0; }
+
+        .hidden-state {
+            display: none !important;
+        }
+
+        /* CURSIVE TEXT AT THE TOP - hidden by default, shown after reveal */
+        .soul-quote {
+            position: fixed;
+            top: 30px;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            pointer-events: none;
+            z-index: 50;
+            color: rgba(255, 245, 200, 0.9);
+            font-family: 'Great Vibes', cursive;
+            font-size: 2.8rem;
+            text-shadow: 0 0 20px #ffd966, 0 0 40px #ffb347, 0 0 60px #ffaa33;
+            letter-spacing: 2px;
+            animation: gentleFloat 4s ease-in-out infinite;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            padding: 0 20px;
+            box-sizing: border-box;
+            opacity: 0;
+            transition: opacity 1.2s ease-in;
+            pointer-events: none;
+        }
+
+        .soul-quote.visible {
+            opacity: 1;
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-5px); }
+        }
+
+        /* Hidden audio player */
+        #bgMusic {
+            position: absolute;
+            width: 0;
+            height: 0;
+            opacity: 0;
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* Responsive adjustment for smaller screens */
+        @media (max-width: 1200px) {
+            .soul-quote {
+                font-size: 2.2rem;
+                white-space: normal;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hidden Audio Player - Sentimental Romantic Piano -->
+    <audio id="bgMusic" autoplay loop>
+        <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+        <!-- Fallback for browsers that don't support MP3 -->
+        <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div id="custom-cursor"></div>
+
+    <!-- BRIGHT TWINKLING STARS - enhanced version -->
+    <div id="star-field"></div>
+
+    <svg class="sprout-container" viewBox="0 0 1000 1000" preserveAspectRatio="none">
+        <path class="growth-vine" d="M500,1000 C500,800 200,800 200,500 S500,200 500,50" />
+        <path class="growth-vine" d="M500,1000 C600,800 800,800 800,500 S500,200 500,100" />
+        <path class="growth-vine" d="M200,1000 C100,800 300,600 100,400 S400,100 200,50" />
+        <path class="growth-vine" d="M800,1000 C700,700 900,500 700,300 S400,400 300,100" />
+    </svg>
+
+    <!-- CURSIVE TEXT AT THE TOP - initially hidden -->
+    <div id="soulQuote" class="soul-quote">your soul is the most beautiful art to ever gaze the earth</div>
+
+    <!-- INTRO UI -->
+    <div id="introUi" class="overlay-ui">
+        <div id="letterGlow" class="glow-text"></div>
+        <button id="revealBtn" class="reveal-btn">REVEAL</button>
+    </div>
+
+    <!-- BIG RECTANGLE CONTINUOUS CAROUSEL with 7 unique grayscale images -->
+    <div id="carouselVignette" class="carousel-wrapper">
+        <div class="hover-zone-left" id="hoverLeft"></div>
+        <div class="hover-zone-right" id="hoverRight"></div>
+        
+        <div class="carousel-container">
+            <div class="carousel-track" id="carouselTrack">
+
+                <div class="carousel-slide" style="background-image: url('assets/art/1.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/5.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/2.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/6.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/3.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/7.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/4.png');"></div>
+          
+                <div class="carousel-slide" style="background-image: url('assets/art/1.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/5.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/2.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/6.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/3.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/7.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/4.png');"></div>
+             
+                <div class="carousel-slide" style="background-image: url('assets/art/1.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/5.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/2.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/6.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/3.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/7.png');"></div>
+                <div class="carousel-slide" style="background-image: url('assets/art/4.png');"></div>
+            </div>
+        </div>
+
+        <!-- HOME BUTTON -->
+        <a href="Main.html" class="home-link">
+            <button class="home-btn">HOME</button>
+        </a>
+    </div>
+
+    <script>
+        const cursor = document.getElementById('custom-cursor');
+        let lastPos = { x: 0, y: 0 };
+
+        window.addEventListener('mousemove', (e) => {
+            cursor.style.left = e.clientX + 'px';
+            cursor.style.top = e.clientY + 'px';
+            
+            const dist = Math.hypot(e.clientX - lastPos.x, e.clientY - lastPos.y);
+            if (dist > 20) { 
+                createTrail(e.clientX, e.clientY);
+                lastPos = { x: e.clientX, y: e.clientY };
+            }
+        });
+
+        function createTrail(x, y) {
+            const trail = document.createElement('div');
+            trail.className = 'trail';
+            trail.style.left = x + 'px';
+            trail.style.top = y + 'px';
+            const size = Math.random() * 15 + 5 + 'px';
+            trail.style.width = size; trail.style.height = size;
+            document.body.appendChild(trail);
+            setTimeout(() => { trail.remove(); }, 1200);
+        }
+
+        // BRIGHT TWINKLING STARS - enhanced
+        function createStars() {
+            const starField = document.getElementById('star-field');
+            if (!starField) return;
+            
+            starField.innerHTML = '';
+            
+            // Create 150 stars
+            for(let i=0; i<150; i++){
+                let s = document.createElement('div');
+                s.className = 'star';
+                
+                let size = Math.random() * 3 + 1 + 'px';
+                s.style.width = size; 
+                s.style.height = size;
+                
+                s.style.top = Math.random() * 100 + 'vh';
+                s.style.left = Math.random() * 100 + 'vw';
+                
+                let duration = (Math.random() * 3.5 + 1.5).toFixed(2) + 's';
+                s.style.setProperty('--d', duration);
+                
+                if (Math.random() > 0.7) {
+                    s.style.boxShadow = '0 0 30px #fff, 0 0 60px #ffd700';
+                    s.style.backgroundColor = '#fffef7';
+                    s.style.filter = 'blur(0.5px)';
+                }
+                
+                document.body.appendChild(s);
+            }
+            
+            // Add large stars
+            for(let i=0; i<15; i++) {
+                let s = document.createElement('div');
+                s.className = 'star star-large';
+                let size = Math.random() * 3 + 3 + 'px';
+                s.style.width = size;
+                s.style.height = size;
+                s.style.top = Math.random() * 100 + 'vh';
+                s.style.left = Math.random() * 100 + 'vw';
+                let duration = (Math.random() * 3 + 2).toFixed(2) + 's';
+                s.style.setProperty('--d', duration);
+                s.style.boxShadow = '0 0 40px #fff, 0 0 80px #ffaa33';
+                s.style.backgroundColor = '#ffffe0';
+                document.body.appendChild(s);
+            }
+        }
+
+        createStars();
+
+        // LETTER-BY-LETTER TITLE
+        const glowContainer = document.getElementById('letterGlow');
+        const fullText = "Looking through the lens";
+        
+        function buildLetterSpans() {
+            glowContainer.innerHTML = '';
+            const characters = fullText.split('');
+            characters.forEach((char, index) => {
+                const span = document.createElement('span');
+                span.className = 'glow-letter';
+                span.textContent = char;
+                span.style.animationDelay = `${index * 0.07}s`;
+                if (char === ' ') {
+                    span.innerHTML = '&nbsp;';
+                    span.style.display = 'inline-block';
+                    span.style.width = '1rem';
+                }
+                glowContainer.appendChild(span);
+            });
+        }
+
+        // CAROUSEL LOGIC with soul quote reveal
+        const introUi = document.getElementById('introUi');
+        const revealBtn = document.getElementById('revealBtn');
+        const carouselWrapper = document.getElementById('carouselVignette');
+        const soulQuote = document.getElementById('soulQuote');
+
+        revealBtn.addEventListener('click', () => {
+            introUi.style.opacity = '0';
+            introUi.style.transition = 'opacity 0.6s';
+            
+            // Show soul quote with fade-in
+            soulQuote.classList.add('visible');
+            
+            setTimeout(() => {
+                introUi.classList.add('hidden-state');
+            }, 600);
+            
+            carouselWrapper.classList.add('active');
+        });
+
+        window.addEventListener('load', () => {
+            buildLetterSpans();
+            introUi.style.opacity = '1';
+            introUi.classList.remove('hidden-state');
+            soulQuote.classList.remove('visible');
+            
+            // Ensure audio plays (some browsers require user interaction)
+            const audio = document.getElementById('bgMusic');
+            audio.volume = 0.4; // Set comfortable volume level (40%)
+            
+            // Try to play audio (may be blocked by browser autoplay policies)
+            audio.play().catch(e => {
+                console.log("Audio autoplay was blocked. Will play after user interaction.");
+                // Play after first user interaction
+                document.addEventListener('click', function playOnClick() {
+                    audio.play();
+                    document.removeEventListener('click', playOnClick);
+                }, { once: true });
+            });
+        });
+    </script>
+</body>
+</html>
