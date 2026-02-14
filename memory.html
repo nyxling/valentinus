@@ -13,14 +13,15 @@
         :root {
             --glimmer-main: rgba(255, 250, 200, 0.9); 
             --glimmer-soft: rgba(255, 245, 150, 0.3);
+            --nav-bg: rgba(255, 255, 255, 0.05);
+            --nav-border: rgba(255, 255, 255, 0.2);
         }
 
-        /* Hides default cursor */
+       
         * { cursor: none !important; }
 
         body {
             margin: 0; padding: 0; overflow: hidden;
-            /* BACKGROUND: Deep forest/dark gradient */
             background: radial-gradient(circle at center, #1a2a1a 0%, #000800 100%);
             height: 100vh;
             display: flex;
@@ -28,7 +29,6 @@
             align-items: center;
         }
 
-        /* --- CUSTOM CURSOR --- */
         #custom-cursor {
             position: fixed;
             width: 80px; height: 80px;
@@ -41,7 +41,6 @@
             filter: drop-shadow(0 0 10px rgba(255,255,255,0.4));
         }
 
-        /* GLIMMER TRAIL EFFECT */
         .trail {
             position: fixed;
             pointer-events: none;
@@ -56,7 +55,84 @@
             100% { transform: translate(-50%, -80px) scale(2.2); opacity: 0; filter: blur(6px); }
         }
 
-        /* --- CURVED VINE LINES (SVG) - SPROUTING & SPREADING --- */
+        .nav-menu {
+            position: fixed;
+            top: 40px;
+            left: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            z-index: 20000; 
+            pointer-events: auto;
+        }
+
+        .nav-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--nav-bg, rgba(255,255,255,0.05));
+            border: 1px solid var(--nav-border, rgba(255,255,255,0.2));
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.4s ease;
+            cursor: none !important;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu.active .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .nav-menu.active .nav-toggle span:nth-child(2) { opacity: 0; }
+        .nav-menu.active .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
+            transition: all 0.4s ease;
+        }
+
+        .nav-menu.active .nav-items {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        .nav-item {
+            padding: 8px 20px;
+            background: var(--nav-bg, rgba(255,255,255,0.05));
+            border: 1px solid var(--nav-border, rgba(255,255,255,0.2));
+            border-radius: 25px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-family: 'Cormorant Garamond', 'Didot', 'Garamond', serif;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #f1c40f;
+            transform: translateX(5px);
+        }
+    
         .sprout-container {
             position: absolute;
             width: 100%; height: 100%;
@@ -131,7 +207,6 @@
             100% { opacity: 0.3; filter: blur(20px); }
         }
 
-        /* ---------- BRIGHT TWINKLING STARS (enhanced) ---------- */
         .star {
             position: absolute;
             background: #fff;
@@ -160,14 +235,12 @@
             }
         }
 
-        /* Larger, brighter stars for more impact */
         .star-large {
             width: 4px !important;
             height: 4px !important;
             filter: blur(1px);
         }
 
-        /* ---------- VISION ASSETS: GREAT VIBES FOR TITLE, CORMORANT FOR BUTTON ---------- */
         .overlay-ui {
             position: absolute;
             top: 0;
@@ -183,7 +256,6 @@
             background: radial-gradient(circle at center, #0a0f0a 0%, #030703 100%);
         }
 
-        /* ELEGANT TITLE — GREAT VIBES (cursive) */
         .glow-text {
             display: flex;
             flex-wrap: wrap;
@@ -213,7 +285,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* REVEAL BUTTON — CORMORANT GARAMOND */
         .reveal-btn {
             pointer-events: auto;
             margin-top: 1.8rem;
@@ -263,7 +334,6 @@
             100% { opacity: 1; transform: translateY(0); }
         }
 
-        /* ----- CAROUSEL CONTAINER ----- */
         .carousel-wrapper {
             position: absolute;
             top: 0;
@@ -287,7 +357,6 @@
             pointer-events: auto;
         }
 
-        /* --- BIG RECTANGLE CONTINUOUS CAROUSEL (NO PAUSE) --- */
         .carousel-container {
             width: 100%;
             overflow: hidden;
@@ -296,7 +365,6 @@
             margin-bottom: 2rem;
         }
 
-        /* Dark overlay for areas outside the mask */
         .carousel-container::after {
             content: '';
             position: absolute;
@@ -325,7 +393,6 @@
             100% { transform: translateX(calc(-100% - 40px)); }
         }
 
-        /* BIG LANDSCAPE CARDS - now with grayscale filter */
         .carousel-slide {
             width: 560px;
             height: 350px;
@@ -339,18 +406,16 @@
             flex-shrink: 0;
             position: relative;
             overflow: hidden;
-            filter: grayscale(1); /* Convert images to grayscale */
+            filter: grayscale(1); 
         }
 
-        /* Slight color shift on hover for emphasis */
         .carousel-slide:hover {
-            filter: grayscale(0.7); /* Slightly less gray on hover */
+            filter: grayscale(0.7); 
             border-color: rgba(255, 255, 160, 0.9);
             box-shadow: 0 0 60px #fbffb0;
             transform: scale(1.01);
         }
 
-        /* Curved reminiscing overlay */
         .carousel-slide::before {
             content: '';
             position: absolute;
@@ -386,56 +451,6 @@
             border-radius: 32px;
         }
 
-        /* HOME BUTTON */
-        .home-link {
-            text-decoration: none;
-            pointer-events: auto;
-            z-index: 30;
-            margin-top: 1.5rem;
-        }
-
-        .home-btn {
-            padding: 0.6rem 2.5rem;
-            font-size: 1.5rem;
-            background: transparent;
-            border: none;
-            color: #fff3c9;
-            text-shadow: 0 0 12px #ffdb7c;
-            letter-spacing: 8px;
-            font-weight: 400;
-            font-family: 'Cormorant Garamond', 'Didot', 'Garamond', serif;
-            text-transform: uppercase;
-            position: relative;
-            cursor: none;
-            transition: 0.2s;
-            display: inline-block;
-        }
-
-        .home-btn::before,
-        .home-btn::after {
-            content: '';
-            position: absolute;
-            top: 50%;
-            width: 60px;
-            height: 1.8px;
-            background: linear-gradient(90deg, transparent, #ffd966, #ffe68f, transparent);
-            box-shadow: 0 0 8px #ffc107;
-            transform: translateY(-50%);
-        }
-        .home-btn::before {
-            left: -80px;
-        }
-        .home-btn::after {
-            right: -80px;
-        }
-
-        .home-btn:hover {
-            color: #ffe99c;
-            text-shadow: 0 0 20px #ffcc66;
-            transform: scale(1.02);
-        }
-
-        /* HOVER SENSOR ZONES (no pause) */
         .hover-zone-left, .hover-zone-right {
             position: absolute;
             top: 0;
@@ -452,7 +467,6 @@
             display: none !important;
         }
 
-        /* CURSIVE TEXT AT THE TOP - hidden by default, shown after reveal */
         .soul-quote {
             position: fixed;
             top: 30px;
@@ -486,7 +500,6 @@
             50% { transform: translateY(-5px); }
         }
 
-        /* Hidden audio player */
         #bgMusic {
             position: absolute;
             width: 0;
@@ -496,28 +509,71 @@
             z-index: -1;
         }
 
-        /* Responsive adjustment for smaller screens */
-        @media (max-width: 1200px) {
+    
+        @media (max-width: 600px) {
+            .nav-menu {
+                top: 20px;
+                left: 20px;
+            }
             .soul-quote {
-                font-size: 2.2rem;
+                font-size: 1.8rem;
                 white-space: normal;
+                top: 15px;
+            }
+            .glow-text {
+                font-size: 3.2rem;
+                padding: 0.5rem 1rem;
+            }
+            .reveal-btn {
+                font-size: 0.9rem;
+                padding: 0.2rem 1rem;
+                letter-spacing: 4px;
+            }
+            .reveal-btn::before,
+            .reveal-btn::after {
+                width: 20px;
+            }
+            .reveal-btn::before { left: -30px; }
+            .reveal-btn::after { right: -30px; }
+            
+            .carousel-slide {
+                width: 280px;
+                height: 175px;
+                border-radius: 20px;
+            }
+            .carousel-track {
+                gap: 20px;
+            }
+            .soul-quote {
+                font-size: 1.5rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <!-- Hidden Audio Player - Sentimental Romantic Piano -->
     <audio id="bgMusic" autoplay loop>
         <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
-        <!-- Fallback for browsers that don't support MP3 -->
         <source src="https://www.bensound.com/bensound-music/bensound-slowmotion.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
     <div id="custom-cursor"></div>
 
-    <!-- BRIGHT TWINKLING STARS - enhanced version -->
+    <div class="nav-menu" id="navMenu">
+        <div class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-items">
+            <a href="Main.html" class="nav-item">Home</a>
+            <a href="letter.html" class="nav-item">Mail</a>
+            <a href="flower.html" class="nav-item">Magic</a>
+            <a href="playlist.html" class="nav-item">Music</a>
+        </div>
+    </div>
+
     <div id="star-field"></div>
 
     <svg class="sprout-container" viewBox="0 0 1000 1000" preserveAspectRatio="none">
@@ -527,16 +583,13 @@
         <path class="growth-vine" d="M800,1000 C700,700 900,500 700,300 S400,400 300,100" />
     </svg>
 
-    <!-- CURSIVE TEXT AT THE TOP - initially hidden -->
     <div id="soulQuote" class="soul-quote">your soul is the most beautiful art to ever gaze the earth</div>
 
-    <!-- INTRO UI -->
     <div id="introUi" class="overlay-ui">
         <div id="letterGlow" class="glow-text"></div>
         <button id="revealBtn" class="reveal-btn">REVEAL</button>
     </div>
 
-    <!-- BIG RECTANGLE CONTINUOUS CAROUSEL with 7 unique grayscale images -->
     <div id="carouselVignette" class="carousel-wrapper">
         <div class="hover-zone-left" id="hoverLeft"></div>
         <div class="hover-zone-right" id="hoverRight"></div>
@@ -570,10 +623,6 @@
             </div>
         </div>
 
-        <!-- HOME BUTTON -->
-        <a href="Main.html" class="home-link">
-            <button class="home-btn">HOME</button>
-        </a>
     </div>
 
     <script>
@@ -602,14 +651,13 @@
             setTimeout(() => { trail.remove(); }, 1200);
         }
 
-        // BRIGHT TWINKLING STARS - enhanced
+       
         function createStars() {
             const starField = document.getElementById('star-field');
             if (!starField) return;
             
             starField.innerHTML = '';
-            
-            // Create 150 stars
+           
             for(let i=0; i<150; i++){
                 let s = document.createElement('div');
                 s.className = 'star';
@@ -633,7 +681,6 @@
                 document.body.appendChild(s);
             }
             
-            // Add large stars
             for(let i=0; i<15; i++) {
                 let s = document.createElement('div');
                 s.className = 'star star-large';
@@ -652,7 +699,6 @@
 
         createStars();
 
-        // LETTER-BY-LETTER TITLE
         const glowContainer = document.getElementById('letterGlow');
         const fullText = "Looking through the lens";
         
@@ -673,7 +719,6 @@
             });
         }
 
-        // CAROUSEL LOGIC with soul quote reveal
         const introUi = document.getElementById('introUi');
         const revealBtn = document.getElementById('revealBtn');
         const carouselWrapper = document.getElementById('carouselVignette');
@@ -683,7 +728,6 @@
             introUi.style.opacity = '0';
             introUi.style.transition = 'opacity 0.6s';
             
-            // Show soul quote with fade-in
             soulQuote.classList.add('visible');
             
             setTimeout(() => {
@@ -692,21 +736,39 @@
             
             carouselWrapper.classList.add('active');
         });
+        const navMenu = document.getElementById('navMenu');
+        const navToggle = document.getElementById('navToggle');
+
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
 
         window.addEventListener('load', () => {
             buildLetterSpans();
             introUi.style.opacity = '1';
             introUi.classList.remove('hidden-state');
             soulQuote.classList.remove('visible');
-            
-            // Ensure audio plays (some browsers require user interaction)
+        
             const audio = document.getElementById('bgMusic');
-            audio.volume = 0.4; // Set comfortable volume level (40%)
+            audio.volume = 0.4; 
             
-            // Try to play audio (may be blocked by browser autoplay policies)
+           
             audio.play().catch(e => {
                 console.log("Audio autoplay was blocked. Will play after user interaction.");
-                // Play after first user interaction
+               
                 document.addEventListener('click', function playOnClick() {
                     audio.play();
                     document.removeEventListener('click', playOnClick);

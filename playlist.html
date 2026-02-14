@@ -11,16 +11,17 @@
             --glimmer-soft: rgba(255, 245, 150, 0.3);
             --accent-gold: #e2d8ad;
             --shine-color: rgba(255, 255, 255, 0.4);
+            --nav-bg: rgba(255, 255, 255, 0.05);
+            --nav-border: rgba(255, 255, 255, 0.2);
         }
 
-        /* --- GREEN RAINING HEARTS --- */
         .heart-particle {
             position: fixed;
-            top: -50px; /* Start above screen */
+            top: -50px; 
             pointer-events: none;
             z-index: 10001;
-            font-size: 100px; /* Big hearts */
-            color: #1c6c39; /* Vibrant green */
+            font-size: 200px; 
+            color: #1c6c39; 
             user-select: none;
             filter: drop-shadow(0 0 8px rgba(21, 122, 58, 0.5));
             animation: heart-rain 3s linear forwards;
@@ -38,7 +39,6 @@
             }
         }
 
-        /* --- BASE STYLE --- */
         body {
             margin: 0;
             padding: 0;
@@ -49,7 +49,6 @@
             cursor: none !important; 
         }
 
-        /* --- SPROUTING VINES --- */
         .bg-vines {
             position: absolute;
             top: 0; left: 0;
@@ -72,32 +71,84 @@
 
         @keyframes growVines { to { stroke-dashoffset: 0; } }
 
-        /* --- HOME BUTTON --- */
-        .home-btn {
-            position: absolute;
+        .nav-menu {
+            position: fixed;
             top: 40px;
             left: 40px;
-            padding: 10px 30px;
-            font-size: 0.8rem;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            text-decoration: none;
-            color: rgba(255, 255, 255, 0.6);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            background: transparent;
-            border-radius: 50px;
-            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 15px;
+            z-index: 20000; 
+            pointer-events: auto;
+        }
+
+        .nav-toggle {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: var(--nav-bg, rgba(255,255,255,0.05));
+            border: 1px solid var(--nav-border, rgba(255,255,255,0.2));
+            backdrop-filter: blur(10px);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 4px;
+            transition: all 0.4s ease;
+            cursor: none !important;
+        }
+
+        .nav-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: white;
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .nav-menu.active .nav-toggle span:nth-child(1) { transform: translateY(6px) rotate(45deg); }
+        .nav-menu.active .nav-toggle span:nth-child(2) { opacity: 0; }
+        .nav-menu.active .nav-toggle span:nth-child(3) { transform: translateY(-6px) rotate(-45deg); }
+
+        .nav-items {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-20px);
             transition: all 0.4s ease;
         }
 
-        .home-btn:hover {
-            color: #f3eedd;
-            border-color: var(--accent-gold);
-            box-shadow: 0 0 15px rgba(241, 196, 15, 0.3);
-            transform: scale(1.05);
+        .nav-menu.active .nav-items {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
         }
 
-        /* --- GLASS MUSIC INDICATOR --- */
+        .nav-item {
+            padding: 8px 20px;
+            background: var(--nav-bg, rgba(255,255,255,0.05));
+            border: 1px solid var(--nav-border, rgba(255,255,255,0.2));
+            border-radius: 25px;
+            color: rgba(255, 255, 255, 0.8);
+            text-decoration: none;
+            font-family: 'Inter', 'Georgia', serif;
+            font-size: 0.85rem;
+            white-space: nowrap;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+            letter-spacing: 1px;
+        }
+
+        .nav-item:hover {
+            background: rgba(255, 255, 255, 0.2);
+            color: #f1c40f;
+            transform: translateX(5px);
+        }
+
         #music-status {
             position: absolute;
             bottom: 40px;
@@ -126,7 +177,6 @@
             100% { height: 20px; opacity: 1; box-shadow: 0 0 10px var(--accent-gold); } 
         }
 
-        /* --- CUSTOM CURSOR --- */
         #custom-cursor {
             position: fixed;
             width: 100px; height: 100px;
@@ -154,7 +204,6 @@
             100% { transform: translate(-50%, -80px) scale(2.2); opacity: 0; filter: blur(6px); }
         }
 
-        /* --- NOTE PANEL --- */
         #note-panel {
             position: absolute;
             left: calc(50% - 460px);
@@ -175,7 +224,6 @@
 
         #note-panel.active { opacity: 0.96; left: calc(50% - 390px); }
 
-        /* --- VINYL PLAYER --- */
         #wrap {
             position: relative;
             z-index: 10;
@@ -225,7 +273,6 @@
 
         .vinyl .print { position: absolute; top: 33%; left: 33%; height: 34%; width: 34%; background-size: cover; border-radius: 50%; }
 
-        /* --- GLOWING GLASS AUDIO PLAYER --- */
         #glass-audio-container {
             width: 320px;
             background: rgba(255, 255, 255, 0.07);
@@ -270,7 +317,6 @@
             filter: invert(1) hue-rotate(180deg) opacity(0.8) drop-shadow(0 0 5px var(--accent-gold));
         }
 
-        /* --- GLASS NAVIGATION ARROWS --- */
         .nav-btn {
             position: absolute;
             top: 50%;
@@ -302,13 +348,41 @@
         .star { position: absolute; background: #fff; border-radius: 50%; pointer-events: none; animation: shimmer var(--d) ease-in-out infinite alternate; }
         @keyframes shimmer { 0% { opacity: 0.1; transform: scale(0.8); } 100% { opacity: 0.8; transform: scale(1.2); } }
         @keyframes spinThat { to { transform: rotate(360deg); } }
+
+        @media (max-width: 600px) {
+            .nav-menu {
+                top: 20px;
+                left: 20px;
+            }
+            .nav-toggle {
+                width: 44px;
+                height: 44px;
+            }
+            .nav-item {
+                font-size: 0.8rem;
+                padding: 6px 16px;
+            }
+        }
     </style>
 </head>
 <body onclick="tryAutoplay()">
 
     <svg class="bg-vines" id="vineSvg"></svg>
     <div id="custom-cursor"></div>
-    <a href="Main.html" class="home-btn">home</a>
+
+    <div class="nav-menu" id="navMenu">
+        <div class="nav-toggle" id="navToggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <div class="nav-items">
+            <a href="Main.html" class="nav-item">Home</a>
+            <a href="letter.html" class="nav-item">Mail</a>
+            <a href="memory.html" class="nav-item">Memories</a>
+            <a href="playlist.html" class="nav-item">Magic</a>
+        </div>
+    </div>
 
     <div id="music-status">
         <div class="bars">
@@ -499,6 +573,27 @@
                 notePanel.classList.add('active');
             }, 600);
         }
+
+        // Navigation toggle logic
+        const navMenu = document.getElementById('navMenu');
+        const navToggle = document.getElementById('navToggle');
+
+        navToggle.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navMenu.contains(e.target)) {
+                navMenu.classList.remove('active');
+            }
+        });
+
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+            });
+        });
 
         initVines();
         for(let i = 0; i < 80; i++) {
